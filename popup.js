@@ -78,11 +78,19 @@ document.addEventListener('DOMContentLoaded', function() {
   function showError(message) {
     errorDiv.textContent = message;
     errorDiv.style.display = 'block';
+    // Add a red border to make the error more noticeable
+    errorDiv.style.border = '1px solid red';
+    errorDiv.style.padding = '10px';
+    errorDiv.style.borderRadius = '4px';
+    errorDiv.style.backgroundColor = '#fff2f2';
   }
 
   function clearError() {
     errorDiv.textContent = '';
     errorDiv.style.display = 'none';
+    errorDiv.style.border = 'none';
+    errorDiv.style.padding = '0';
+    errorDiv.style.backgroundColor = 'transparent';
   }
 
   function showSummary(text) {
