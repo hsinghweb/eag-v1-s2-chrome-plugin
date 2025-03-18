@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Web Page Summarizer",
   "version": "1.0",
-  "description": "Summarizes web pages using Hugging Face's DeepSeek-V3 model",
+  "description": "Summarizes web pages using LLM model",
   "permissions": [
     "activeTab",
     "storage"

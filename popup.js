@@ -93,7 +93,9 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   function showSummary(text) {
-    summaryDiv.textContent = text;
+    // Remove any instruction markers and get only the generated text
+    const cleanedText = text.replace(/\[INST\].*?\[\/INST\]/s, '').trim();
+    summaryDiv.textContent = cleanedText;
   }
 
   function clearSummary() {
