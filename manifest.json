@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Web Page Summarizer",
   "version": "1.0",
-  "description": "Summarizes web pages using Google Gemini Flash 2.0 LLM",
+  "description": "Summarizes web pages using Hugging Face's DeepSeek-V3 model",
   "permissions": [
     "activeTab",
     "storage"

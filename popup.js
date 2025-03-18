@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
   const loadingDiv = document.getElementById('loading');
 
   // Load saved API key
-  chrome.storage.local.get(['geminiApiKey'], function(result) {
-    if (result.geminiApiKey) {
-      apiKeyInput.value = result.geminiApiKey;
+  chrome.storage.local.get(['huggingFaceApiKey'], function(result) {
+    if (result.huggingFaceApiKey) {
+      apiKeyInput.value = result.huggingFaceApiKey;
     }
   });
 
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
   saveKeyButton.addEventListener('click', function() {
     const apiKey = apiKeyInput.value.trim();
     if (apiKey) {
-      chrome.storage.local.set({ geminiApiKey: apiKey }, function() {
+      chrome.storage.local.set({ huggingFaceApiKey: apiKey }, function() {
         alert('API key saved successfully!');
       });
     } else {
@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
   summarizeButton.addEventListener('click', async function() {
     const apiKey = apiKeyInput.value.trim();
     if (!apiKey) {
-      showError('Please enter your Google Gemini API key');
+      showError('Please enter your Hugging Face API key');
       return;
     }
 
@@ -78,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function() {
   function showError(message) {
     errorDiv.textContent = message;
     errorDiv.style.display = 'block';
-    // Add a red border to make the error more noticeable
     errorDiv.style.border = '1px solid red';
     errorDiv.style.padding = '10px';
     errorDiv.style.borderRadius = '4px';

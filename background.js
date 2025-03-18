@@ -4,7 +4,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     const apiKey = request.apiKey;
     const content = request.content;
 
-    // Call the Gemini API to generate the summary
+    // Call the DeepSeek API to generate the summary
     generateSummary(content, apiKey)
       .then(summary => {
         sendResponse({ summary: summary });
@@ -21,32 +21,35 @@ const RETRY_DELAY_MS = 1000; // Initial retry delay of 1 second
 const MAX_RETRIES = 3;
 
 async function generateSummary(content, apiKey) {
-  const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+  const apiUrl = 'https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1';
   let retries = 0;
   let delay = RETRY_DELAY_MS;
 
   while (retries <= MAX_RETRIES) {
     try {
-      const response = await fetch(`${apiUrl}?key=${apiKey}`, {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
+          'Authorization': `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `Please provide a concise summary of the following text:\n\n${content}`
-            }]
-          }]
+          inputs: `[INST] Please provide a clear and concise summary of the following text. Focus on the main points and key information:\n\n${content}[/INST]`,
+          parameters: {
+            max_new_tokens: 500,
+            temperature: 0.7,
+            top_p: 0.95,
+            repetition_penalty: 1.15
+          }
         })
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        const errorMessage = errorData.error?.message || 'Failed to generate summary';
+        const errorMessage = errorData.error || 'Failed to generate summary';
         
-        // Check if it's a quota exceeded error
-        if (errorMessage.includes('Quota exceeded')) {
+        // Check if it's a rate limit error
+        if (response.status === 429) {
           if (retries < MAX_RETRIES) {
             // Wait before retrying with exponential backoff
             await new Promise(resolve => setTimeout(resolve, delay));
@@ -60,11 +63,13 @@ async function generateSummary(content, apiKey) {
       }
 
       const data = await response.json();
-      return data.candidates[0].content.parts[0].text;
+      return data[0].generated_text.trim();
     } catch (error) {
-      if (retries === MAX_RETRIES || !error.message.includes('Quota exceeded')) {
+      // Check if we've hit max retries or if it's not a rate limit error
+      if (retries === MAX_RETRIES || (error.name !== 'TypeError' && error.message !== 'Failed to fetch')) {
         throw new Error('Error generating summary: ' + error.message);
       }
+      // Wait before retrying
       await new Promise(resolve => setTimeout(resolve, delay));
       delay *= 2;
       retries++;
