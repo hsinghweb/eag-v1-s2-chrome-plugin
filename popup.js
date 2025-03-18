@@ -95,8 +95,11 @@ document.addEventListener('DOMContentLoaded', function() {
   function showSummary(text) {
     // Remove any instruction markers and get only the generated text
     const cleanedText = text.replace(/\[INST\].*?\[\/INST\]/s, '').trim();
-    summaryDiv.textContent = cleanedText;
-  }
+    // Format bullet points with line breaks
+    const formattedText = cleanedText.replace(/•/g, '\n•').replace(/\n+•/, '•').trim();
+    summaryDiv.style.whiteSpace = 'pre-wrap';
+    summaryDiv.textContent = formattedText;
+}
 
   function clearSummary() {
     summaryDiv.textContent = '';

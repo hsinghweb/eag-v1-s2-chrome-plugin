@@ -34,7 +34,7 @@ async function generateSummary(content, apiKey) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          inputs: `[INST]Summarize:\n\n${content}[/INST]`,
+          inputs: `[INST]Summarize the following text as clear, concise bullet points:\n\n${content}[/INST]`,
           parameters: {
             max_new_tokens: 500,
             temperature: 0.7,
