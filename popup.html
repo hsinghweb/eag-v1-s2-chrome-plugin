@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Web Page Summarizer</title>
+  <style>
+    body {
+      width: 400px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .api-key-section {
+      margin-bottom: 15px;
+    }
+    #apiKey {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    #summary {
+      width: 100%;
+      min-height: 200px;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      resize: vertical;
+    }
+    .error {
+      color: red;
+      margin-top: 10px;
+      display: none;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    .loading {
+      display: none;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="api-key-section">
+      <label for="apiKey">Google Gemini API Key:</label>
+      <input type="password" id="apiKey" placeholder="Enter your API key">
+      <button id="saveKey">Save API Key</button>
+    </div>
+    
+    <button id="summarize">Summarize Page</button>
+    
+    <div class="loading" id="loading">
+      Generating summary...
+    </div>
+    
+    <div id="summary"></div>
+    
+    <div class="error" id="error"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
